@@ -1,6 +1,7 @@
 from database import DatabaseCommunicator
 import time
 
+
 async def check_command_permission(ctx, command):
     user_id = str(ctx.author.id)
     guild = str(ctx.guild.id)

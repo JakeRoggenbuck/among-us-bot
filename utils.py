@@ -20,8 +20,10 @@ def generate_multi_line_highlight(entries: list, highlight: str = "") -> str:
     message += "\n```"
     return message
 
+
 def clean_mention(mention) -> str:
     return mention[3:-1]
+
 
 def make_mention(_id) -> str:
     return f"<@!{_id}>"

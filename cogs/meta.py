@@ -35,5 +35,6 @@ class Sudo(commands.Cog):
         else:
             await ctx.send(f"permission denied")
 
+
 def setup(client):
     client.add_cog(Sudo(client))

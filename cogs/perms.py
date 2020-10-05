@@ -16,7 +16,9 @@ class Perms(commands.Cog):
         if authorized:
             guild = str(ctx.guild.id)
             db = DatabaseCommunicator(guild)
-            await db.auth.find_one_and_update({"user_id": user_id},{"$push": {"access": perm}}, upsert=True)
+            await db.auth.find_one_and_update(
+                {"user_id": user_id}, {"$push": {"access": perm}}, upsert=True
+            )
             await ctx.send(f"{mention} added to {perm}")
         else:
             await ctx.send(f"permission denied")
@@ -28,7 +30,9 @@ class Perms(commands.Cog):
         if authorized:
             guild = str(ctx.guild.id)
             db = DatabaseCommunicator(guild)
-            await db.auth.find_one_and_update({"user_id": user_id}, { "$pull": { "access": { "$in": [perm] }} })
+            await db.auth.find_one_and_update(
+                {"user_id": user_id}, {"$pull": {"access": {"$in": [perm]}}}
+            )
             await ctx.send(f"{mention} removed from {perm}")
         else:
             await ctx.send(f"permission denied")
@@ -55,7 +59,26 @@ class Perms(commands.Cog):
         if authorized:
             guild = str(ctx.guild.id)
             db = DatabaseCommunicator(guild)
-            await db.auth.find_one_and_update({"user_id": user_id},{"$push": {"access": { "$each": ["add", "remove", "check", "load", "unload", "reload", "make_admin", "code"]}}}, upsert=True)
+            await db.auth.find_one_and_update(
+                {"user_id": user_id},
+                {
+                    "$push": {
+                        "access": {
+                            "$each": [
+                                "add",
+                                "remove",
+                                "check",
+                                "load",
+                                "unload",
+                                "reload",
+                                "make_admin",
+                                "code",
+                            ]
+                        }
+                    }
+                },
+                upsert=True,
+            )
             await ctx.send(f"{mention} added as admin")
         else:
             await ctx.send(f"permission denied")

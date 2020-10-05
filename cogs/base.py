@@ -15,7 +15,7 @@ class Base(commands.Cog):
     @commands.command()
     async def ping(self, ctx):
         ping_pong = emoji.emojize(":ping_pong:")
-        await ctx.send(f"Pong! {ping_pong}")
+        await ctx.send(f"Pong! {self.client.latency*1000:2.3f} ms {ping_pong}")
 
 
 def setup(client):

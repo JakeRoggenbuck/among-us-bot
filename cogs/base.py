@@ -1,5 +1,5 @@
 import discord
-import discord.ext.commands as commands
+from discord.ext import commands
 import emoji
 import auth
 

@@ -1,5 +1,5 @@
 import discord
-import discord.ext.commands as commands
+from discord.ext import commands
 from database import DatabaseCommunicator
 import auth
 import utils
@@ -36,7 +36,7 @@ class Perms(commands.Cog):
     @commands.command()
     async def check(self, ctx, mention, perm):
         user_id = utils.clean_mention(mention)
-        authorized = await auth.check_command_permission(ctx, "remove")
+        authorized = await auth.check_command_permission(ctx, "check")
         if authorized:
             guild = str(ctx.guild.id)
             db = DatabaseCommunicator(guild)
@@ -45,6 +45,18 @@ class Perms(commands.Cog):
                 await ctx.send(f"User has {perm}")
             else:
                 await ctx.send(f"User does not have {perm}")
+        else:
+            await ctx.send(f"permission denied")
+
+    @commands.command()
+    async def make_admin(self, ctx, mention):
+        user_id = utils.clean_mention(mention)
+        authorized = await auth.check_command_permission(ctx, "make_admin")
+        if authorized:
+            guild = str(ctx.guild.id)
+            db = DatabaseCommunicator(guild)
+            await db.auth.find_one_and_update({"user_id": user_id},{"$push": {"access": { "$each": ["add", "remove", "check", "load", "unload", "reload", "make_admin", "code"]}}}, upsert=True)
+            await ctx.send(f"{mention} added as admin")
         else:
             await ctx.send(f"permission denied")
 

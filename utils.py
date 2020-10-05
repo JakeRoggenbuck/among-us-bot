@@ -13,9 +13,15 @@ class Config:
         return config
 
 
-def generate_multi_line_highlight(entries, highlight=""):
+def generate_multi_line_highlight(entries: list, highlight: str = "") -> str:
     message = f"```{highlight}\n"
     for entrie in entries:
         message += entrie
     message += "\n```"
     return message
+
+def clean_mention(mention) -> str:
+    return mention[3:-1]
+
+def make_mention(_id) -> str:
+    return f"<@!{_id}>"

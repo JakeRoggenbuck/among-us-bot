@@ -2,6 +2,7 @@ import discord
 import discord.ext.commands as commands
 from database import DatabaseCommunicator
 import auth
+import utils
 
 
 class Perms(commands.Cog):
@@ -9,24 +10,41 @@ class Perms(commands.Cog):
         self.client = client
 
     @commands.command()
-    async def add(self, ctx, user_id, perm):
+    async def add(self, ctx, mention, perm):
+        user_id = utils.clean_mention(mention)
         authorized = await auth.check_command_permission(ctx, "add")
         if authorized:
             guild = str(ctx.guild.id)
             db = DatabaseCommunicator(guild)
             await db.auth.find_one_and_update({"user_id": user_id},{"$push": {"access": perm}}, upsert=True)
-            await ctx.send(f"{user_id} added to {perm}")
+            await ctx.send(f"{mention} added to {perm}")
         else:
             await ctx.send(f"permission denied")
 
     @commands.command()
-    async def remove(self, ctx, user_id, perm):
+    async def remove(self, ctx, mention, perm):
+        user_id = utils.clean_mention(mention)
         authorized = await auth.check_command_permission(ctx, "remove")
         if authorized:
             guild = str(ctx.guild.id)
             db = DatabaseCommunicator(guild)
             await db.auth.find_one_and_update({"user_id": user_id}, { "$pull": { "access": { "$in": [perm] }} })
-            await ctx.send(f"{user_id} removed to {perm}")
+            await ctx.send(f"{mention} removed from {perm}")
+        else:
+            await ctx.send(f"permission denied")
+
+    @commands.command()
+    async def check(self, ctx, mention, perm):
+        user_id = utils.clean_mention(mention)
+        authorized = await auth.check_command_permission(ctx, "remove")
+        if authorized:
+            guild = str(ctx.guild.id)
+            db = DatabaseCommunicator(guild)
+            has_perm = await db.auth.find_one({"user_id": user_id, "access": perm})
+            if has_perm is not None:
+                await ctx.send(f"User has {perm}")
+            else:
+                await ctx.send(f"User does not have {perm}")
         else:
             await ctx.send(f"permission denied")
 

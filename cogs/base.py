@@ -1,6 +1,7 @@
 import discord
 import discord.ext.commands as commands
 import emoji
+import auth
 
 
 class Base(commands.Cog):

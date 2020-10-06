@@ -1,0 +1,5 @@
+discord.py==1.5.0
+emoji==0.6.0
+motor==2.3.0
+discord==1.0.1
+PyYAML==5.3.1

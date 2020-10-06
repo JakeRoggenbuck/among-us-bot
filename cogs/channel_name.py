@@ -14,7 +14,8 @@ class ChannelName(commands.Cog):
         if authorized:
             pattern = regex.compile("[A-Z]{6}")
             # Check if new_name.upper() matches pattern
-            if (name := pattern.search(new_name.upper())) is not None:
+            name = pattern.search(new_name.upper())
+            if name is not None:
                 # Get vc name
                 voice_channel_name = ctx.author.voice.channel
                 # Change vc name to new name

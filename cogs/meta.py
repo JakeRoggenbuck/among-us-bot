@@ -1,5 +1,7 @@
 import discord
 from discord.ext import commands
+import subprocess
+import emoji
 import auth
 
 
@@ -34,6 +36,17 @@ class Sudo(commands.Cog):
             await ctx.send(f"{extention} reloaded!")
         else:
             await ctx.send(f"permission denied")
+
+    @commands.command()
+    async def ping(self, ctx):
+        ping_pong = emoji.emojize(":ping_pong:")
+        await ctx.send(f"Pong! {self.client.latency*1000:2.3f} ms {ping_pong}")
+
+    @commands.command()
+    async def version(self, ctx):
+        version = 1.0
+        commit = subprocess.check_output('git log --format="%H" -n 1', shell=True).decode("utf-8").strip("\n")
+        await ctx.send(f"Bot {version} at {commit[0:6]}")
 
 
 def setup(client):

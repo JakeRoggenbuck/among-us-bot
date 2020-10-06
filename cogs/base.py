@@ -12,11 +12,6 @@ class Base(commands.Cog):
     async def on_ready(self):
         print("Bot is online")
 
-    @commands.command()
-    async def ping(self, ctx):
-        ping_pong = emoji.emojize(":ping_pong:")
-        await ctx.send(f"Pong! {self.client.latency*1000:2.3f} ms {ping_pong}")
-
 
 def setup(client):
     client.add_cog(Base(client))

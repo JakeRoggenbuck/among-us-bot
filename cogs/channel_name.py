@@ -18,8 +18,11 @@ class ChannelName(commands.Cog):
             if name is not None:
                 # Get vc name
                 voice_channel_name = ctx.author.voice.channel
-                # Change vc name to new name
-                await voice_channel_name.edit(name=name.group(0))
+                if len(voice_channel_name.name) == 6:
+                    # Change vc name to new name
+                    await voice_channel_name.edit(name=name.group(0))
+                else:
+                    await ctx.send(f"name not a channel you can change")
             else:
                 await ctx.send(f"name not a valid code")
         else:
